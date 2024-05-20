@@ -18,3 +18,5 @@ nosetests*.xml
 
 .idea/
 *.iml
+.venv
+apps/base/cache_data

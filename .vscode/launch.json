@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug local mapproxy",
+            "type": "python",
+            "request": "launch",
+            "program": ".venv/bin/mapproxy-util",
+            "args": [
+                "serve-develop",
+                "-b",
+                ":8080",
+                "apps/base/mapproxy.yaml",
+                "--debug"
+            ],
+            "console": "integratedTerminal",
+            "autoReload": {
+                "enable": true
+            }
+        }
+    ]
+}

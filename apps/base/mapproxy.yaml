@@ -1,0 +1,92 @@
+# -------------------------------
+# MapProxy example configuration.
+# -------------------------------
+#
+# This is a minimal MapProxy configuration.
+# See full_example.yaml and the documentation for more options.
+#
+
+# Starts the following services:
+# Demo:
+#     http://localhost:8080/demo
+# WMS:
+#     capabilities: http://localhost:8080/service?REQUEST=GetCapabilities
+# WMTS:
+#     capabilities: http://localhost:8080/wmts/1.0.0/WMTSCapabilities.xml
+#     first tile: http://localhost:8080/wmts/osm/webmercator/0/0/0.png
+# Tile service (compatible with OSM/etc.)
+#     first tile: http://localhost:8080/tiles/osm/webmercator/0/0/0.png
+# TMS:
+#     note: TMS is not compatible with OSM/Google Maps/etc.
+#     first tile: http://localhost:8080/tms/1.0.0/osm/webmercator/0/0/0.png
+# KML:
+#     initial doc: http://localhost:8080/kml/osm/webmercator
+
+services:
+  demo:
+  tms:
+    use_grid_names: true
+    # origin for /tiles service
+    origin: 'nw'
+  kml:
+      use_grid_names: true
+  wmts:
+  wms:
+    md:
+      title: MapProxy WMS Proxy
+      abstract: This is a minimal MapProxy example.
+
+layers:
+  - name: giaothong_cache
+    title: "giaothong_cache"
+    sources: [osm_cache]
+
+  - name: giaothong_wms
+    title: "Giao thông"
+    sources: [osm_wms]
+
+caches:
+  osm_cache:
+    format: my_format
+    grids: [webmercator]
+    sources: [osm_wms]
+
+sources:
+  osm_wms:
+    type: wms
+    req:
+      url: https://admin:Maphub%40123@stable.gishub.datalink.vn/geoserver/ows?
+      transparent: true
+      layers: geonode:giaothong
+    http:
+      headers:
+         Authorization: Basic YWRtaW46TWFwaHViQDEyMw==
+    coverage:
+      bbox: [106.35890669636039, 10.378968656492786, 106.97392659811209, 11.156123600914654]
+      srs: 'EPSG:4326'
+
+grids:
+    webmercator:
+        base: GLOBAL_WEBMERCATOR
+
+globals:
+  image:
+    formats:
+      my_format:
+        format: image/png
+        mode: P
+        transparent: true
+  # cache options
+  # cache:
+  #   # where to store the cached images
+  #   base_dir: './cache_data'
+  #   # where to store lockfiles for concurrent_requests
+  #   lock_dir: './cache_data/locks'
+  #   # where to store lockfiles for tile creation
+  #   tile_lock_dir: './cache_data/tile_locks'
+
+  #   # request x*y tiles in one step
+  #   meta_size: [4, 4]
+  #   # add a buffer on all sides (in pixel) when requesting
+  #   # new images
+  #   meta_buffer: 80
